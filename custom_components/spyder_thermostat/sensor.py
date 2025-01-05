@@ -5,22 +5,16 @@ import logging
 from datetime import timedelta
 from typing import Any
 
-# Use the newer location for async_timeout
+import aiohttp
 from async_timeout import timeout
 
-import aiohttp
-
 from homeassistant.components.sensor import (
-    SensorEntity,
     SensorDeviceClass,
+    SensorEntity,
     SensorStateClass,
 )
 from homeassistant.config_entries import ConfigEntry
-from homeassistant.const import (
-    CONF_HOST,
-    TEMP_FAHRENHEIT,
-    PERCENTAGE,
-)
+from homeassistant.const import CONF_HOST, PERCENTAGE, TEMP_FAHRENHEIT
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import (
@@ -29,6 +23,7 @@ from homeassistant.helpers.update_coordinator import (
 )
 
 from .const import DOMAIN, SCAN_INTERVAL
+
 _LOGGER = logging.getLogger(__name__)
 
 async def async_setup_entry(
@@ -41,7 +36,7 @@ async def async_setup_entry(
 
     async def async_update_data():
         """Fetch data from API endpoint."""
-        async with async_timeout.timeout(10):
+        async with timeout(10):
             async with aiohttp.ClientSession() as session:
                 async with session.get(f"http://{host}/rawstatus") as resp:
                     return await resp.json()
