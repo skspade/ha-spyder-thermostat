@@ -6,6 +6,6 @@
   "codeowners": [],
   "requirements": ["aiohttp>=3.8.0", "async_timeout>=4.0.0"],
   "iot_class": "local_polling",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "config_flow": true
 }
